@@ -13,6 +13,7 @@ class ResultActivity : Activity() {
         private var checkIn = true
     }
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
 
@@ -21,19 +22,26 @@ class ResultActivity : Activity() {
         View.SYSTEM_UI_FLAG_FULLSCREEN
         val resultBar = findViewById(R.id.result_progress_bar) as ProgressBar
         val resultImg = findViewById(R.id.result_img) as ImageView
-        if (checkIn) Picasso.with(applicationContext).load(R.drawable.yes).into(resultImg)
-        else Picasso.with(applicationContext).load(R.drawable.yes).into(resultImg)
-        Thread {
+
+
+        
+        checkIn = !checkIn
+
+        Thread{
             Thread.sleep(3000)
-        resultBar.visibility = View.GONE
-            resultImg.visibility = View.VISIBLE
+            resultImg.post {
+                Picasso.with(applicationContext).load(
+                        if (checkIn) R.drawable.yes
+                        else R.drawable.no
+                ).into(resultImg)
+                resultImg.visibility = View.VISIBLE
+                resultBar.visibility = View.GONE
+            }
+            Thread.sleep(2000)
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            startActivity(intent)
         }.start()
 
 
-        checkIn = false
-       resultImg.setOnClickListener {
-           val intent = Intent(applicationContext, MainActivity::class.java)
-           startActivity(intent)
-       }
     }
 }

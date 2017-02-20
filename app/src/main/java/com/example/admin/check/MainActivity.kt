@@ -46,9 +46,13 @@ class MainActivity: Activity() {
             mOutputFileUri = Uri.fromFile(file)
             intent.putExtra(MediaStore.EXTRA_OUTPUT, mOutputFileUri)
             startActivityForResult(intent1, TAKE_PICTURE)
-            next = 1
         }
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val resultIntent = Intent(applicationContext, ResultActivity::class.java)
+        startActivity(resultIntent)
+    }
 }
